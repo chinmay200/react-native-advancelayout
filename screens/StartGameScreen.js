@@ -1,7 +1,29 @@
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import { useState } from "react";
 
 const StartScreen = () => {
+  const [number, setNumber] = useState("");
+
+  const enteredNumber = (enterednumber) => {
+    setNumber(enterednumber);
+  };
+
+  const resetInput = () => {
+    setNumber("");
+  };
+
+  const onPressHandler = () => {
+    const chosenNumber = parseInt(number);
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Error message", "Invalid input", [
+        { text: "Ok", style: "default", onPress: resetInput },
+      ]);
+      return;
+    }
+    console.log(number);
+  };
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -10,9 +32,13 @@ const StartScreen = () => {
         keyboardType="number-pad"
         autoCapitalize="none"
         autoCorrect={false}
+        value={number}
+        onChangeText={enteredNumber}
       />
-      <PrimaryButton text="Reset" />
-      <PrimaryButton text="Submit" />
+      <View style={styles.buttonsContainer}>
+        <PrimaryButton onPress={resetInput} text="Reset" />
+        <PrimaryButton onPress={onPressHandler} text="Submit" />
+      </View>
     </View>
   );
 };
@@ -41,5 +67,12 @@ const styles = StyleSheet.create({
     color: "#31572c",
     fontWeight: "bold",
     textAlign: "center",
+  },
+
+  buttonsContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
 });
