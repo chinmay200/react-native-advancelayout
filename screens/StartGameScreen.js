@@ -1,8 +1,11 @@
 import { View, StyleSheet, TextInput, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { useState } from "react";
+import colors from "../utils/colors";
+import Title from "../components/Title";
+import IntroText from "../components/IntroText";
 
-const StartScreen = () => {
+const StartScreen = ({ pickedNumberHandler }) => {
   const [number, setNumber] = useState("");
 
   const enteredNumber = (enterednumber) => {
@@ -21,23 +24,28 @@ const StartScreen = () => {
       ]);
       return;
     }
-    console.log(number);
+    pickedNumberHandler(chosenNumber);
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        maxLength={2}
-        keyboardType="number-pad"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={number}
-        onChangeText={enteredNumber}
-      />
-      <View style={styles.buttonsContainer}>
-        <PrimaryButton onPress={resetInput} text="Reset" />
-        <PrimaryButton onPress={onPressHandler} text="Submit" />
+    <View>
+      <IntroText>Guess my number</IntroText>
+      <View style={styles.inputContainer}>
+        <Title title={"Pick a number"} />
+        <TextInput
+          placeholder="Between 0-99"
+          style={styles.input}
+          maxLength={2}
+          keyboardType="number-pad"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={number}
+          onChangeText={enteredNumber}
+        />
+        <View style={styles.buttonsContainer}>
+          <PrimaryButton onPress={resetInput} >{"Reset"}</PrimaryButton>
+          <PrimaryButton onPress={onPressHandler} >{"Submit"}</PrimaryButton>
+        </View>
       </View>
     </View>
   );
@@ -47,9 +55,10 @@ export default StartScreen;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: "#ffbe0b",
-    padding: 30,
-    width: "80%",
+    backgroundColor: colors.primary500,
+    paddingVertical: 20,
+    paddingHorizontal: 5,
+    width: "85%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -57,15 +66,14 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: "100%",
+    width: "80%",
     height: 40,
-    fontSize: 30,
+    fontSize: 27,
     paddingBottom: 5,
     marginBottom: 5,
-    borderBottomColor: "#31572c",
+    borderBottomColor: colors.secondry500,
     borderBottomWidth: 2,
-    color: "#31572c",
-    fontWeight: "bold",
+    color: colors.secondry500,
     textAlign: "center",
   },
 
